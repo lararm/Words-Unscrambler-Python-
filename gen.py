@@ -38,10 +38,11 @@ class Generator:
 		###Stuff added
 		countkey=0
 		countkey2=0
-		
+			
+		#Search for candidate word- most probably one
 		for i in range(len(self.words_input)):
 		  if self.words_input[i] in candidate_words:
-			#print "candidate,value", self.words_input[i],candidate_words[self.words_input[i]]
+			print "candidate,value", self.words_input[i],candidate_words[self.words_input[i]]
 			countkey = candidate_words[self.words_input[i]]
 			if (countkey > countkey2):
 				countkey2 = countkey
@@ -53,13 +54,13 @@ class Generator:
 			
 			#candidate_words = self.db.get_word_count([nextw])
 	        #print "candidate_words:::",candidate_words
-			return nextw	
+			return nextw
 		else:
 			 if len(word_list)>0 and self.words_input: #if there is a next word
+				print "not found"				
 				rand = random.choice(self.words_input)
 				print "rand:",rand
 				self.words_input.remove(rand)
-				print "not found"
 				return rand
 			 else:
 				return 
@@ -77,29 +78,38 @@ class Generator:
 		assert False
 
 	def generate(self, word_separator):
-		print "generate$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
+		print "$$$$$$$$$$$$$$$$$$$$$$$$generate$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
 		#print "word separator::",word_separator
 		depth = self.db.get_depth()
 		#print "depth", depth
 		sentence = [Parser.SENTENCE_START_SYMBOL] * (depth - 1)
-		#print "sentence",Parser.SENTENCE_START_SYMBOL*(depth - 1)
+		print "sentence",Parser.SENTENCE_START_SYMBOL*(depth - 1)
 		end_symbol = [Parser.SENTENCE_END_SYMBOL] * (depth - 1)
-		#print "end_symbol:",end_symbol
+		print "end_symbol:",end_symbol
 		countail=0
 		counter=0
 		while True:
 			tail = sentence[(-depth+1):]
 			print "tail",tail
-			if (counter==11) or (tail == end_symbol):
+			if (counter==11) or (tail == end_symbol): ####change counter =11
 				print "Found end symbol!", counter
 				break
-			if countail ==0:
-			   word = self.input
-			   countail=1
+			if countail ==0 and (self.input is not '^'):
+			 countail=1
+			 word = self.input    
 			else:
 				print "else",counter
 				word = self._get_next_word(tail)
 			sentence.append(word)
+		
+		#Is no uppercase found and word list starts with start symbol, then remove start symbol ('^') from list
+		if sentence[0] == '^':
+			print "sentence zero here",sentence[0]
+			print sentence
+			#sentence.remove('^')
+			#self.words_input.remove(word_list[0])
+			
+		
 		
 		return word_separator.join(sentence[depth-1:][:1-depth])
 
@@ -121,17 +131,23 @@ class Generator:
 		return words_input	
 	
 	def get_input_word(self):
-	#Find frist word of Sentence (most likely that one with uppercase letter, if none is found, get a random - for now
+	#Find frist word of Sentence (most likely that one with uppercase letter, if none is found, get a random word
 	  seed =0
+	  count=0
 	  for x in range(len(self.words_input)):
 	  #print self.words2[x]
 		if self.words_input[x].istitle():
+			count = count +1
 			seed = x
 			print "uppercase",self.words_input[x]
 			input_word= self.words_input[x]
+			#return input_word
 			#print "found an uppercase letter",seed
-		if seed is 0:
-			print "no uppercase found"
-	  return input_word
+	  #If there are more than one upper case letter - find the most probable to begin sentence 
+	  if count ==1:
+			return input_word		
+	  if count >1: 
+			return '^'
+	  return '^'
 	
 	
