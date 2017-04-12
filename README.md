@@ -29,6 +29,6 @@ file = location+ name of source training file
 <h2>Generating Sentence </h2>
 To generate new sentences, run the program in generate mode, using the name specified during the parse operation. The scrambled sentence is saved on a file named try.txt (we needed it to be saved instead of requesting input from a user, but this can be easily modified)
 <p>
->> python markov.py gen <name> 1
+>> python markov.py gen <name>
 </p>
  where name = database name 
