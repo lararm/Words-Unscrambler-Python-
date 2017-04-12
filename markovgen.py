@@ -35,7 +35,7 @@ if __name__ == '__main__':
 		Parser(name, db, SENTENCE_SEPARATOR, WORD_SEPARATOR).parse(txt)
 	
 	elif mode == 'gen':
-		count = int(args[3])
+		count = 1
 		
 		db = Db(sqlite3.connect(name + '.db'), Sql())
 		generator = Generator(name, db, Rnd())
