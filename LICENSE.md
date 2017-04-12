@@ -22,4 +22,5 @@ SOFTWARE.
 The MIT License (MIT)
 
 Part of this code was based on:
+
 Copyright (c) 2015 Rob Dawson
